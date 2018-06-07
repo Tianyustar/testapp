@@ -60,6 +60,7 @@ public class MyFragment4 extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.me_btn_logout:
                 Log.e("in onclick","logout button");

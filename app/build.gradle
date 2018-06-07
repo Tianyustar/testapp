@@ -17,9 +17,9 @@ android {
         }
     }
 
-    sourceSets{
-        main{
-            jniLibs.srcDirs=['libs']
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
@@ -41,5 +41,5 @@ dependencies {
     implementation 'com.zzhoujay.richtext:richtext:3.0.5'
     implementation 'com.bilibili:magicasakura:0.1.8@aar'
     implementation files('libs/usrcloudmqttclientsdk.jar')
-    compile files('libs/BaiduLBS_Android.jar')
+    implementation files('libs/BaiduLBS_Android.jar')
 }

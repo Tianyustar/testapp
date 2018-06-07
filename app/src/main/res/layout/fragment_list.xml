@@ -6,17 +6,21 @@
 
 
             <RelativeLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/gray_ee">
 
                 <TextView
+                    android:id="@+id/tv_all_dev"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="所有设备"
+
                     android:textColor="@color/white"
                     android:textSize="18sp" />
+
 
             </RelativeLayout>
 

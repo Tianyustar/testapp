@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.yunxi.testapp.global.*;
 
 import com.example.yunxi.testapp.R;
+import com.example.yunxi.testapp.pojo.LatitudeAndLongitude;
+import com.example.yunxi.testapp.pojo.SerialHashMap;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -41,14 +43,30 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private SharedPreferences sharedPreferences; // 记录用户名和密码
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+       // justForTest();
+
+
         mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         bindViews();
         rb_channel.setChecked(true);
         sharedPreferences = getSharedPreferences(SysConfig.SP_NAME, MODE_PRIVATE);
         checkToken();
     }
+
+    private void justForTest(){
+
+        Intent intent = new Intent(this, BaiduMapActivity.class);
+        SerialHashMap serHashMap = new SerialHashMap();
+        serHashMap.put("Point1", new LatitudeAndLongitude(31.905, 118.89472222222223));
+        serHashMap.put("Point2", new LatitudeAndLongitude(31.995, 118.9));
+        intent.putExtra("mapPoint",serHashMap);
+        startActivity(intent);
+    }
+
 
     private void bindViews() {
         txt_topbar = (TextView) findViewById(R.id.txt_topbar);

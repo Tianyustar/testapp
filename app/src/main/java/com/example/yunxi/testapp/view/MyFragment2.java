@@ -1,7 +1,9 @@
 package com.example.yunxi.testapp.view;
 
 
+import android.bluetooth.BluetoothClass;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.yunxi.testapp.R;
@@ -21,7 +24,9 @@ import com.example.yunxi.testapp.global.SPEnum;
 import com.example.yunxi.testapp.global.SysConfig;
 import com.example.yunxi.testapp.global.URLEnum;
 import com.example.yunxi.testapp.pojo.Device;
+import com.example.yunxi.testapp.pojo.LatitudeAndLongitude;
 import com.example.yunxi.testapp.pojo.RespondDevice;
+import com.example.yunxi.testapp.pojo.SerialHashMap;
 import com.example.yunxi.testapp.util.TBaseCallback;
 
 import org.xutils.http.RequestParams;
@@ -31,18 +36,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 import static android.content.Context.MODE_PRIVATE;
 
-public class MyFragment2 extends Fragment {
+public class MyFragment2 extends Fragment implements View.OnClickListener {
 
 
     private Context mContext;
     private ListView list_allDev;
     private ListView list_onlineDev;
+    private TextView tv_all_dev ;
     private TAdapter<Device> alldeviceTAdapter;
     private TAdapter<Device> onlineDeviceTAdapter;
     private List<Device>  alldeviceList;
     private List<Device>  onlineDeviceList;
+
     public MyFragment2(){
 
     }
@@ -62,6 +71,8 @@ public class MyFragment2 extends Fragment {
         mContext = this.getActivity();
         list_allDev = view.findViewById(R.id.list_alldev);
         list_onlineDev = view.findViewById(R.id.list_ondev);
+        tv_all_dev = view.findViewById(R.id.tv_all_dev);
+        tv_all_dev.setOnClickListener(this);
         alldeviceList = new ArrayList<Device>();
         onlineDeviceList = new ArrayList<Device>();
         getInfo(token);
@@ -83,7 +94,6 @@ public class MyFragment2 extends Fragment {
     }
 
     private void getInfo(String token ) {
-
 
         RequestParams params = new RequestParams(URLEnum.GetAllDevice.getUrl());
         HashMap<String ,String> jsonContent = new HashMap<>();
@@ -121,6 +131,33 @@ public class MyFragment2 extends Fragment {
 
         // 获取离线设备数量
 
+    }
 
+    SerialHashMap getDevPosition(List<Device> alldeviceList){
+
+        SerialHashMap hashMap = new SerialHashMap();
+        if (alldeviceList  == null) return  null;
+        for (Device device : alldeviceList){
+            hashMap.put(device.getName(), new LatitudeAndLongitude(device.getPosition()));
+        }
+        return hashMap;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        Log.e("view2", "in onclick");
+        switch (v.getId()){
+            case R.id.tv_all_dev:
+                Log.e("int tv_all_dev", "in tv all dev");
+                SerialHashMap serialHashMap = getDevPosition(alldeviceList);
+                if (serialHashMap != null) {
+                    Intent intent  = new Intent(this.getContext(), BaiduMapActivity.class);
+                    intent.putExtra("mapPoint", serialHashMap);
+                    startActivity(intent);
+                }
+
+
+        }
     }
 }
